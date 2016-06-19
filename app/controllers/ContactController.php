@@ -16,7 +16,7 @@ class ContactController extends ApiController
             $data   = $contact->get($id);
         }
 
-        return $this->response($data);
+        return $this->responseWithJson($data);
     }
 
     public function create($id = null)
@@ -27,7 +27,7 @@ class ContactController extends ApiController
         $params     = $_POST;
         $data       = $contact->create($id, $params);
 
-        return $this->response($data);
+        return $this->responseWithJson($data);
     }
 
     public function update($id = null)
@@ -43,7 +43,7 @@ class ContactController extends ApiController
             $data   = $contact->update($id, $params);
         }
 
-        return $this->response($data);
+        return $this->responseWithJson($data);
     }
 
     public function delete($id = null)
@@ -56,6 +56,6 @@ class ContactController extends ApiController
             $data   = $contact->delete($id);
         }
 
-        return $this->response($data);
+        return $this->responseWithJson($data);
     }
 }

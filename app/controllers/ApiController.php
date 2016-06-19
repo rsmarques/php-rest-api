@@ -11,7 +11,13 @@ class ApiController
         return (isset($codes[$code])) ? $codes[$code] : $codes[500];
     }
 
-    public function response($data, $status = 200)
+    public function responseWithView($data, $status = 200)
+    {
+        header("HTTP/1.1 " . $status . " " . $this->requestStatus($status));
+        echo $data;
+    }
+
+    public function responseWithJson($data, $status = 200)
     {
         header("HTTP/1.1 " . $status . " " . $this->requestStatus($status));
         echo json_encode($data);
@@ -20,6 +26,6 @@ class ApiController
     public function responseWithErrors($errors, $code = 500)
     {
         $errorData  = array('errors' => $errors);
-        return $this->response($errorData, $code);
+        return $this->responseWithJson($errorData, $code);
     }
 }

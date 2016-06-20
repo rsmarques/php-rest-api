@@ -9,7 +9,7 @@ Simple RESTful API for data manipulation.
 
 ## Requirements
 
-In order to build the application a PHP web server is needed (e.g., [Apache](https://www.nginx.com/)), and a [Google Firebase](https://www.firebase.com/) account.
+In order to build the application a PHP web server is needed (e.g., [Apache](http://www.apache.org/), [NGINX](https://www.nginx.com/)), and a [Google Firebase](https://www.firebase.com/) account.
 
 ## Usage
 

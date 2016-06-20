@@ -6,7 +6,7 @@ class ApiController
 {
     private function requestStatus($code)
     {
-        $codes  = include('../app/config/http_codes.php');
+        $codes  = include(__DIR__ . '/../config/http_codes.php');
 
         return (isset($codes[$code])) ? $codes[$code] : $codes[500];
     }

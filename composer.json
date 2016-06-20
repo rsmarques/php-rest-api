@@ -1,1 +1,16 @@
-{}
+{
+    "require": {
+        "phpunit/phpunit": "5.4.*",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "autoload": {
+        "psr-0":{
+            "app" : "",
+            "Firebase" : "app/lib"
+        },
+        "files" : [
+            "app/config/firebase.php",
+            "app/config/http_codes.php"
+        ]
+    }
+}

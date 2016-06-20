@@ -24,15 +24,7 @@ class Contact extends ApiModel
     {
         if (empty($id)) {
             // generating id to next entry
-            $contacts           = $this->getAll();
-            if (empty($contacts)) {
-                $id             = 1;
-            } else {
-                $contactIds     = array_keys((array) $contacts);
-                $lastContactId  = end($contactIds);
-
-                $id             = ++$lastContactId;
-            }
+            $id     = uniqid();
         }
 
         $contact    = $this->firebase->set(self::FIREBASE_PATH . $id, $params);

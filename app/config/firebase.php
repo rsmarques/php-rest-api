@@ -1,8 +1,8 @@
 <?php
 
 $firebaseConfig = array(
-    'url'       => 'https://php-assessment.firebaseio.com/',
-    'token'     => 'H63Xnwr0aXXVtq1Cbfhuk5vATbmMFwUrhMb8N8fu',
+    'url'       => '', // configure your firebase URL here
+    'token'     => '', // configure your firebase token here
 );
 
 return $firebaseConfig;

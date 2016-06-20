@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>REST API</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap: Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- Bootstrap: Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <base href="/">
+</head>
+<body>
+    <div class="jumbotron">
+        <div class="container">
+            <h1>REST API</h1>
+            <p>Simple RESTful API for data manipulation</p>
+            <ul>
+                <li>Requests handled with PHP</li>
+                <li>Google Firebase for data storage</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Usage</h2>
+                <ol>
+                    <li>Clone <a href="https://github.com/rsmarques/rest-api.git">Source Code</a></li>
+                    <li>Configure your Firebase credentials in /app/config/firebase.php</li>
+                    <li>Define your models/controllers</li>
+                    <li>composer install (for unit testing)</li>
+                    <li>Application URL usage: /{modelName}⁄{id?}, according to <a href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST architecture</a></li>
+                </ol>
+            </div>
+            <div class="col-md-6">
+                <h2>Requirements</h2>
+                <p>In order to build the application a PHP web server is needed (e.g., <a href="http://www.apache.org/">Apache</a>, <a href="https://www.nginx.com/">NGINX</a>), and a <a href="https://www.firebase.com/">Google Firebase</a> account</p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

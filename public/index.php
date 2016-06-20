@@ -2,40 +2,47 @@
 
 // autoloader
 require_once(__DIR__ . '/../app/lib/SplClassLoader.php');
-// firebase
-require_once(__DIR__ . '/../app/lib/firebase/firebaseLib.php');
 
 $loader             = new SplClassLoader('app', __DIR__ . '/../');
 $loader->register();
+$firebaseLoader     = new SplClassLoader('Firebase', __DIR__ . '/../app/lib');
+$firebaseLoader->register();
+
+// Instantiating ApiController
+$api                = new app\controllers\ApiController;
 
 $allowedMethods     = ['GET', 'POST', 'PUT', 'DELETE'];
-
 $requestMethod      = $_SERVER['REQUEST_METHOD'];
+
+// Invalid URL error messages
+$invalidUrlMessage  = 'Invalid URL! Usage: /{modelName}/{id?}; Methods: GET, POST, PUT, DELETE';
 
 // Assuring httpd method is a RESTful request
 if (!in_array($requestMethod, $allowedMethods)) {
-    $api            = new app\controllers\ApiController;
-    return $api->responseWithErrors("Method not allowed", 402);
+    return $api->responseWithErrors($invalidUrlMessage, 402);
 }
 
 $requestUri         = $_SERVER['REQUEST_URI'];
 $requestParsed      = parse_url($requestUri);
 
+if (empty($requestParsed['path'])) {
+    return $api->responseWithErrors($invalidUrlMessage, 402);
+}
+
 // Parsing request_uri assuring it's a RESTful request
 $requestUrl         = $requestParsed['path'];
-if (isset($requestParsed['query'])) {
-    parse_str($requestParsed['query'], $requestQuery);
-} else {
-    $requestQuery   = [];
-}
-
 $requestUrlParams   = explode('/', trim($requestUrl, '/'));
 
-// Not a REST request, URL has to be /resource/{?id}
-if (count($requestUrlParams) > 2) {
-    $api            = new app\controllers\ApiController;
-    return $api->responseWithErrors("Bad Request", 400);
+if (empty($requestUrlParams[0])) {
+    // Root URL, rendering home view
+    return $api->responseWithView(file_get_contents(__DIR__ . "/views/home.html"), 200);
 }
+
+if (count($requestUrlParams) > 2) {
+    // Not a REST request, URL has to be /resource/{id?}
+    return $api->responseWithErrors($invalidUrlMessage, 400);
+}
+
 
 $requestModel       = strtolower($requestUrlParams[0]);
 $requestModelId     = isset($requestUrlParams[1]) ? $requestUrlParams[1] : null;
@@ -44,8 +51,7 @@ $controllerName     = 'app\controllers\\' . ucfirst($requestModel) . 'Controller
 
 // Checking if controller is defined
 if (!class_exists($controllerName)) {
-    $api            = new app\controllers\ApiController;
-    return $api->responseWithErrors("Model not defined", 405);
+    return $api->responseWithErrors("Model [$requestModel] not defined", 405);
 }
 
 $controller         = new $controllerName;

@@ -8,7 +8,7 @@ class ApiModel
 
     public function __construct()
     {
-        $firebaseConfig = include('../app/config/firebase.php');
+        $firebaseConfig = include(__DIR__ . '/../config/firebase.php');
         $this->firebase = new \Firebase\FirebaseLib($firebaseConfig['url'], $firebaseConfig['token']);
     }
 }

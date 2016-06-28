@@ -1,5 +1,6 @@
 <?php
-namespace Firebase;
+
+namespace app\lib\Firebase;
 
 /**
  * Interface FirebaseInterface

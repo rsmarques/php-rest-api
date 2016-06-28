@@ -5,8 +5,7 @@
     },
     "autoload": {
         "psr-0":{
-            "app" : "",
-            "Firebase" : "app/lib"
+            "app" : ""
         },
         "files" : [
             "app/config/firebase.php",

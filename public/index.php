@@ -1,12 +1,7 @@
 <?php
 
 // autoloader
-require_once(__DIR__ . '/../app/lib/SplClassLoader.php');
-// firebase (storage)
-require_once(__DIR__ . '/../app/lib/firebase/firebaseLib.php');
-
-$loader             = new SplClassLoader('app', __DIR__ . '/../');
-$loader->register();
+require __DIR__ . '/../vendor/autoload.php';
 
 // Instantiating ApiController
 $api                = new app\controllers\ApiController;

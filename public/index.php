@@ -3,8 +3,7 @@
 // autoloader
 require __DIR__ . '/../vendor/autoload.php';
 
-// Instantiating ApiController
-$api                = new app\controllers\ApiController;
+use app\http\Response as Response;
 
 $allowedMethods     = ['GET', 'POST', 'PUT', 'DELETE'];
 $requestMethod      = $_SERVER['REQUEST_METHOD'];
@@ -14,14 +13,14 @@ $invalidUrlMessage  = 'Invalid URL! Usage: /{modelName}/{id?}; Methods: GET, POS
 
 // Assuring httpd method is a RESTful request
 if (!in_array($requestMethod, $allowedMethods)) {
-    return $api->responseWithErrors($invalidUrlMessage, 402);
+    return Response::error($invalidUrlMessage, Response::HTTP_METHOD_NOT_ALLOWED);
 }
 
 $requestUri         = $_SERVER['REQUEST_URI'];
 $requestParsed      = parse_url($requestUri);
 
 if (empty($requestParsed['path'])) {
-    return $api->responseWithErrors($invalidUrlMessage, 402);
+    return Response::error($invalidUrlMessage, Response::HTTP_NOT_FOUND);
 }
 
 // Parsing request_uri assuring it's a RESTful request
@@ -30,12 +29,12 @@ $requestUrlParams   = explode('/', trim($requestUrl, '/'));
 
 if (empty($requestUrlParams[0])) {
     // Root URL, rendering home view
-    return $api->responseWithView(file_get_contents(__DIR__ . "/views/home.html"), 200);
+    return new Response(file_get_contents(__DIR__ . "/views/home.html"), Response::HTTP_OK);
 }
 
 if (count($requestUrlParams) > 2) {
     // Not a REST request, URL has to be /resource/{id?}
-    return $api->responseWithErrors($invalidUrlMessage, 400);
+    return Response::error($invalidUrlMessage, Response::HTTP_NOT_FOUND);
 }
 
 
@@ -46,7 +45,7 @@ $controllerName     = 'app\controllers\\' . ucfirst($requestModel) . 'Controller
 
 // Checking if controller is defined
 if (!class_exists($controllerName)) {
-    return $api->responseWithErrors("Model [$requestModel] not defined", 405);
+    return Response::error("Model [$requestModel] not defined", Response::HTTP_BAD_REQUEST);
 }
 
 $controller         = new $controllerName;

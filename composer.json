@@ -6,10 +6,6 @@
     "autoload": {
         "psr-0":{
             "app" : ""
-        },
-        "files" : [
-            "app/config/firebase.php",
-            "app/config/http_codes.php"
-        ]
+        }
     }
 }

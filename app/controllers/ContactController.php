@@ -2,9 +2,12 @@
 
 namespace app\controllers;
 
+use app\http\Request;
+use app\http\Response;
+
 use app\models\Contact;
 
-class ContactController extends ApiController
+class ContactController
 {
     public function get($id = null)
     {
@@ -16,7 +19,7 @@ class ContactController extends ApiController
             $data   = $contact->get($id);
         }
 
-        return $this->responseWithJson($data);
+        return Response::json($data);
     }
 
     public function create($id = null)
@@ -27,7 +30,7 @@ class ContactController extends ApiController
         $params     = $_POST;
         $data       = $contact->create($id, $params);
 
-        return $this->responseWithJson($data);
+        return Response::json($data);
     }
 
     public function update($id = null)
@@ -43,7 +46,7 @@ class ContactController extends ApiController
             $data   = $contact->update($id, $params);
         }
 
-        return $this->responseWithJson($data);
+        return Response::json($data);
     }
 
     public function delete($id = null)
@@ -56,6 +59,6 @@ class ContactController extends ApiController
             $data   = $contact->delete($id);
         }
 
-        return $this->responseWithJson($data);
+        return Response::json($data);
     }
 }

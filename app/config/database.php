@@ -9,8 +9,8 @@ return array(
     'connections'   => array(
 
         'firebase'  => array(
-            'url'   => '', // configure your firebase URL here
-            'token' => '', // configure your firebase token here
+            'url'   => 'https://php-assessment.firebaseio.com/', // configure your firebase URL here
+            'token' => 'H63Xnwr0aXXVtq1Cbfhuk5vATbmMFwUrhMb8N8fu', // configure your firebase token here
         ),
     ),
 );

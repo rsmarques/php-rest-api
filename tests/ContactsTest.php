@@ -23,11 +23,11 @@ class ContactsTest extends TestCase
     public function test()
     {
         // Testing delete all
-        $response   = $this->client->delete('/contact', []);
+        $response   = $this->client->delete('/contacts/', []);
         $this->assertEquals(200, $response->getStatusCode());
 
         // Testing creating a list of items
-        $response   = $this->client->put('/contact', ['form_params' => $this->testData]);
+        $response   = $this->client->put('/contacts/', ['form_params' => $this->testData]);
         $this->assertEquals(200, $response->getStatusCode());
 
         $data       = json_decode($response->getBody(), true);
@@ -35,14 +35,14 @@ class ContactsTest extends TestCase
 
         // Testing retrieving an item (first element)
         reset($this->testData);
-        $response   = $this->client->get('/contact/' . key($this->testData), []);
+        $response   = $this->client->get('/contacts/' . key($this->testData), []);
         $this->assertEquals(200, $response->getStatusCode());
 
         $data       = json_decode($response->getBody(), true);
         $this->assertEquals($data, current($this->testData));
 
         // Testing retrieving all items
-        $response   = $this->client->get('/contact/', []);
+        $response   = $this->client->get('/contacts/', []);
         $this->assertEquals(200, $response->getStatusCode());
 
         $data       = json_decode($response->getBody(), true);
@@ -50,30 +50,30 @@ class ContactsTest extends TestCase
 
         // Testing deleting one element (last element)
         end($this->testData);
-        $response   = $this->client->delete('/contact/' . key($this->testData), []);
+        $response   = $this->client->delete('/contacts/' . key($this->testData), []);
         $this->assertEquals(200, $response->getStatusCode());
 
-        $response   = $this->client->get('/contact/' . key($this->testData), []);
+        $response   = $this->client->get('/contacts/' . key($this->testData), []);
         $data       = json_decode($response->getBody(), true);
         // assuring the item is no longer in the db
         $this->assertEquals($data, []);
 
         // Testing updating one element (last element into first)
         reset($this->testData);
-        $response   = $this->client->put('/contact/' . key($this->testData), ['form_params' => end($this->testData)]);
+        $response   = $this->client->put('/contacts/' . key($this->testData), ['form_params' => end($this->testData)]);
         $this->assertEquals(200, $response->getStatusCode());
 
         $data       = json_decode($response->getBody(), true);
         $this->assertEquals($data, current($this->testData));
 
         // Testing creating an element
-        $response   = $this->client->post('/contact/', ['form_params' => reset($this->testData)]);
+        $response   = $this->client->post('/contacts/', ['form_params' => reset($this->testData)]);
         $this->assertEquals(200, $response->getStatusCode());
 
         $data       = json_decode($response->getBody(), true);
         $this->assertEquals($data, current($this->testData));
 
-        $response   = $this->client->get('/contact/', []);
+        $response   = $this->client->get('/contacts/', []);
         $data       = json_decode($response->getBody(), true);
         // assuring last item is equal than the one created
         $this->assertEquals(end($data), current($this->testData));

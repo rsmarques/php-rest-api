@@ -51,10 +51,10 @@ class Router
         array_push($this->routes[$method], [$path => $handler]);
     }
 
-    public function match($server = [], $post = [])
+    public function match(Request $request)
     {
-        $requestMethod = $server['REQUEST_METHOD'];
-        $requestUri    = $server['REQUEST_URI'];
+        $requestMethod  = $request->getMethod();
+        $requestPath    = $request->getPath();
 
         if (!in_array($requestMethod, array_keys($this->routes))) {
             return Response::error("Invalid URL! Usage: /{modelName}/{id?}; Methods: GET, POST, PUT, DELETE", Response::HTTP_METHOD_NOT_ALLOWED);
@@ -64,19 +64,19 @@ class Router
 
         foreach ($routes as $resource) {
 
-            $args       = [];
-            $route      = key($resource);
-            $handler    = reset($resource);
+            $args           = [];
+            $route          = key($resource);
+            $handler        = reset($resource);
 
             // normalizing routes beggining/end slashes
-            $requestUri = '/' . trim($requestUri, '/') . '/';
-            $route      = '/' . trim($route, '/') . '/';
+            $requestPath    = '/' . trim($requestPath, '/') . '/';
+            $route          = '/' . trim($route, '/') . '/';
 
             if (preg_match(self::REGVAL, $route)) {
-                list($args, $uri, $route) = $this->parseRegexRoute($requestUri, $route);
+                list($args, $uri, $route) = $this->parseRegexRoute($requestPath, $route);
             }
 
-            if (!preg_match("#^$route$#", $requestUri)) {
+            if (!preg_match("#^$route$#", $requestPath)) {
                 continue;
             }
 
@@ -102,7 +102,7 @@ class Router
         return Response::error("Invalid URL! Usage: /{modelName}/{id?}; Methods: GET, POST, PUT, DELETE", Response::HTTP_NOT_FOUND);
     }
 
-    protected function parseRegexRoute($requestUri, $resource)
+    protected function parseRegexRoute($requestPath, $resource)
     {
         $route  = preg_replace_callback(self::REGVAL, function ($matches) use ($resource) {
 
@@ -115,7 +115,7 @@ class Router
         }, $resource);
 
         $regUri     = explode('/', $resource);
-        $args       = array_diff(array_replace($regUri, explode('/', $requestUri)), $regUri);
+        $args       = array_diff(array_replace($regUri, explode('/', $requestPath)), $regUri);
 
         return [array_values($args), $resource, $route];
     }

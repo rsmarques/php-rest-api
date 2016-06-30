@@ -2,6 +2,10 @@
 
 namespace app\http;
 
+/**
+ * Response represents an HTTP response (based on symfony/http-foundation).
+ *
+ */
 class Response
 {
     const HTTP_CONTINUE = 100;

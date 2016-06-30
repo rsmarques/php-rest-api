@@ -2,22 +2,31 @@
 
 namespace app\models;
 
-class Contact extends ApiModel
+use app\lib\database\DBConnector;
+
+class Contact
 {
     const FIREBASE_PATH  = '/contacts/';
+    private $dbConnection;
+
+    public function __construct()
+    {
+        $this->dbConnection     = DBConnector::getDefaultDatabase();
+        $this->dbConnection->connect(array('path' => self::FIREBASE_PATH));
+    }
 
     public function get($id)
     {
-        $contact    = $this->firebase->get(self::FIREBASE_PATH . $id);
+        $contact    = $this->dbConnection->get($id);
 
-        return (array) json_decode($contact);
+        return $contact;
     }
 
     public function getAll()
     {
-        $contacts   = $this->firebase->get(self::FIREBASE_PATH);
+        $contacts   = $this->dbConnection->get(null);
 
-        return (array) json_decode($contacts);
+        return $contacts;
     }
 
     public function create($id = null, $params = array())
@@ -27,36 +36,36 @@ class Contact extends ApiModel
             $id     = uniqid();
         }
 
-        $contact    = $this->firebase->set(self::FIREBASE_PATH . $id, $params);
+        $contact    = $this->dbConnection->set($id, $params);
 
-        return (array) json_decode($contact);
+        return $contact;
     }
 
     public function update($id, $params)
     {
-        $contact    = $this->firebase->set(self::FIREBASE_PATH . $id, $params);
+        $contact    = $this->dbConnection->set($id, $params);
 
-        return (array) json_decode($contact);
+        return $contact;
     }
 
     public function updateAll($params)
     {
-        $contacts   = $this->firebase->set(self::FIREBASE_PATH, $params);
+        $contacts   = $this->dbConnection->set(null, $params);
 
-        return (array) json_decode($contacts);
+        return $contacts;
     }
 
     public function delete($id)
     {
-        $this->firebase->delete(self::FIREBASE_PATH . $id);
+        $response   = $this->dbConnection->delete($id);
 
-        return true;
+        return $response;
     }
 
     public function deleteAll()
     {
-        $this->firebase->delete(self::FIREBASE_PATH);
+        $response   = $this->dbConnection->delete(null);
 
-        return true;
+        return $response;
     }
 }

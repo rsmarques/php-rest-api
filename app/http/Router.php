@@ -57,7 +57,7 @@ class Router
         $requestPath    = $request->getPath();
 
         if (!in_array($requestMethod, array_keys($this->routes))) {
-            return Response::error("Invalid URL! Usage: /{modelName}/{id?}; Methods: GET, POST, PUT, DELETE", Response::HTTP_METHOD_NOT_ALLOWED);
+            return Response::error("Oops, method not allowed! use [GET, POST, PUT, DELETE]", Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
         $routes         = array_merge($this->routes[$requestMethod], $this->routes['ANY']);
@@ -99,7 +99,7 @@ class Router
         }
 
         // Route not found, sending HTTP_NOT_FOUND
-        return Response::error("Invalid URL! Usage: /{modelName}/{id?}; Methods: GET, POST, PUT, DELETE", Response::HTTP_NOT_FOUND);
+        return Response::error("Oops, route not found!", Response::HTTP_NOT_FOUND);
     }
 
     protected function parseRegexRoute($requestPath, $resource)

@@ -11,7 +11,7 @@ class Router
         'POST'      => [],
         'PUT'       => [],
         'DELETE'    => [],
-        // 'ANY'       => [], TODO
+        'ANY'       => [],
     ];
 
     // patterns for regex routing matching
@@ -21,12 +21,10 @@ class Router
         'optional'  => '(\w+\/)?',
     ];
 
-
-    // TODO
-    // public function any($path, $handler)
-    // {
-    //     $this->addRoute('ANY', $path, $handler);
-    // }
+    public function any($path, $handler)
+    {
+        $this->addRoute('ANY', $path, $handler);
+    }
 
     public function get($path, $handler)
     {
@@ -62,7 +60,9 @@ class Router
             return Response::error("Invalid URL! Usage: /{modelName}/{id?}; Methods: GET, POST, PUT, DELETE", Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
-        foreach ($this->routes[$requestMethod] as $resource) {
+        $routes         = array_merge($this->routes[$requestMethod], $this->routes['ANY']);
+
+        foreach ($routes as $resource) {
 
             $args       = [];
             $route      = key($resource);
@@ -77,7 +77,6 @@ class Router
             }
 
             if (!preg_match("#^$route$#", $requestUri)) {
-                // unset($this->routes[$requestMethod]);
                 continue;
             }
 
